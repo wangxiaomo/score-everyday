@@ -13,7 +13,32 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/data', function() {
+Route::post('/login', function() {
+    $client_id = 4;
+    $client_secret = 'K6LV852RB1qmKyX2sKNdENCfKmx7nofBT0gy05lQ';
+    $email = request()->input('email');
+    $password = request()->input('password');
+    $scope = request()->input('scope', '');
+
+    $http = new GuzzleHttp\Client;
+    try{
+        $response = $http->post('http://dev.minmore.com/oauth/token', [
+            'form_params'   =>  [
+                'grant_type'    =>  'password',
+                'client_id'     =>  $client_id,
+                'client_secret' =>  $client_secret,
+                'username'      =>  $email,
+                'password'      =>  $password,
+                'scope'         =>  $scope,
+            ]
+        ]);
+    }catch(\GuzzleHttp\Exception\ClientException $e){
+        $response = $e->getResponse();
+    }
+    return json_decode($response->getBody(), true);
+});
+
+Route::middleware('auth:api')->get('/data', function(){
     return response()->json([
         '2017/09/04' => 3,
         '2017/09/05' => 10,
@@ -21,3 +46,4 @@ Route::get('/data', function() {
         '2017/09/07' => 0,
     ]);
 });
+
