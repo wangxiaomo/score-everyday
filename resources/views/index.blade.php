@@ -83,7 +83,7 @@
         + "H" + (w0 + 1) * cellSize + "Z";
   }
 
-  d3.json("/api/data", function(error, data) {
+  d3.json("/user_data", function(error, data) {
     if (error) throw error;
 
     rect.filter(function(d) { return d in data; })

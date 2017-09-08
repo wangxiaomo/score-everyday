@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,12 +39,10 @@ Route::post('/login', function() {
     return json_decode($response->getBody(), true);
 });
 
-Route::middleware('auth:api')->get('/data', function(){
-    return response()->json([
-        '2017/09/04' => 3,
-        '2017/09/05' => 10,
-        '2017/09/06' => 1,
-        '2017/09/07' => 0,
-    ]);
+Route::middleware('auth:api')->get('/data', function() {
+    $id = Auth::id();
+    $year = date('Y');
+    $key = "score_everyday:user_$id:$year";
+    $values = Redis::hgetall($key);
+    return response()->json($values);
 });
-
