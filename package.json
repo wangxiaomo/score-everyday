@@ -17,5 +17,9 @@
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
     "vue": "^2.1.10"
+  },
+  "dependencies": {
+    "bootstrap-notify": "github:mouse0270/bootstrap-notify",
+    "d3": "^4.10.2"
   }
 }

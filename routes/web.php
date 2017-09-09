@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redis;
 Auth::routes();
 
 Route::get('/', 'IndexController@index')->name('home');
+Route::post('/incr/{step}', 'IndexController@incr');
 Route::get('/settings', 'IndexController@oauth');
 
 Route::middleware('auth')->get('/user_data', function() {
