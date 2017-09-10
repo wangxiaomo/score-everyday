@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\UserScoreLog;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,6 +45,7 @@ class User extends Authenticatable
         $v = $v+intval($step);
         if($v>10) $v=10;if($v<-10) $v=-10;
         Redis::hset($key, date('Y/m/d'), $v);
+        UserScoreLog::create(['uid'=>$id, 'step'=>$step]);
         return $v;
     }
 }
