@@ -32,7 +32,18 @@ class User extends Authenticatable
     public function get_score() {
         $id = $this->id;
         $year = date('Y');
-        $key = "score_your_life:$id:$year";
-        return $key;
+        $key = "score_everyday:user_$id:$year";
+        return Redis::hgetall($key);
+    }
+
+    public function incr($step) {
+        $id = $this->id;
+        $year = date('Y');
+        $key = "score_everyday:user_$id:$year";
+        $v = Redis::hget($key, date('Y/m/d'));
+        $v = $v+intval($step);
+        if($v>10) $v=10;if($v<-10) $v=-10;
+        Redis::hset($key, date('Y/m/d'), $v);
+        return $v;
     }
 }
